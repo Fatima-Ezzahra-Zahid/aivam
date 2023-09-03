@@ -1,0 +1,89 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+<div class="blew-block "
+     style="background-image: url('/{{ base_path ~ active_theme_path() }}/assets/images/background-blew-block.png')">
+    <div class="row-2 fix-block ">
+        <div class=" row align-items-center row-division p-0 pb-4 pt-4">
+            <div class="col-lg-12">
+                {{ title_prefix }}
+                {% if label %}
+                    <h2 {{ title_attributes }} class="title-bold w-75">{{ label }}</h2>
+                {% endif %}
+                {{ title_suffix }}
+
+              <div class="text-justify">
+                {{ content.body }}
+              </div>
+
+            </div>
+        </div>
+        <ul class="nav nav-pills nav-secteur" id="pills-tab" role="tablist">
+
+            {% for content in content.field_pragraph_ittidm['#items'] %}
+                <li class="nav-item">
+                    <a class="nav-link{{ (loop.index == 1) ? ' active' : '' }}"
+                       id="{{ content.entity.field_id_ittidm.value }}-tab" data-toggle="pill"
+                       href="#{{ content.entity.field_id_ittidm.value }}"
+                       role="tab"
+                       aria-controls="{{ content.entity.field_id_ittidm.value }}"
+                       aria-selected="true">{{ content.entity.field_title_ittidm.value }}</a>
+                </li>
+            {% endfor %}
+
+        </ul>
+        <div class="tab-content tab-secteur" id="pills-tabContent">
+
+            {% for content in content.field_pragraph_ittidm['#items'] %}
+                <div class="tab-pane fade{{ (loop.index == 1) ? ' show active' : '' }}"
+                     id="{{ content.entity.field_id_ittidm.value }}" role="tabpanel"
+                     aria-labelledby="{{ content.entity.field_id_ittidm.value }}-tab">
+
+                    <div class="row" id="slider-progresse{{ loop.index }}">
+                        {% for content in content.entity.field_paragraph_ittidm.value %}
+                            {% set paragraph = paragraphLoad(content.target_id) %}
+                            <div class="col-lg-3 col-12 item-progress">
+                                <label>{{ paragraph.field_title_ttid.value|raw }}</label>
+                                <div class="progress-bar position"
+                                     data-percent="{{ paragraph.field_percentage_ttid.value }}" data-duration="1000"
+                                     data-color="#fbfbfb,#f8942a">
+                                    <img src="{{ file_url(paragraph.field_icon_ttid.entity.fileuri) }}">
+                                </div>
+                                <label class="count-number">{{ paragraph.field_body_ttid.value|raw }}</label>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{{ attach_library('aivam/progress_librarie') }}

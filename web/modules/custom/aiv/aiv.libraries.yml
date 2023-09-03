@@ -1,0 +1,4 @@
+script-galerie:
+  version: 1.x
+  js:
+    assets/js/galerie-home.js: {}

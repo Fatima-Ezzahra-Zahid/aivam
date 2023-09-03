@@ -1,0 +1,56 @@
+<div class="card-actualite">
+    <div class="small-width">
+        <div class="width-text">
+            <h2 class="title-bold">{{ data.settings.label }}</h2>{#TODO#}
+            {{ data.settings.text_descriptive.value|raw }}{#TODO#}
+        </div>
+        <a href="{{ path('entity.node.canonical', { 'node' : 2 }) }}">{{ data.settings['title_all_news'] }}</a>{#TODO#}
+    </div>
+    <div id="slider-actu">
+        {% for key, actu in data.items %}
+            {% if actu|length > 1 %}
+                <div>
+                    <div class="under-slide">
+                        {% for item in actu %}
+                            <div>
+                                <div class="row item-actu">
+                                    <div class="col-lg-6 col-4 p-0">
+                                        <figure style="background-image:url({{ item.image }})"></figure>
+                                    </div>
+                                    <div class="col-lg-6 col-8">
+                                        <div class="width-text">
+                                            <label>{{ key }}</label>
+                                            {#<h3>{{ item.title|slice(0,20) }}</h3>#}
+                                            <h3>{{ item.title }}</h3>
+                                            <p>{{ item.body|striptags|slice(0,80) }}</p>
+                                            <a href="{{ path('entity.node.canonical', { 'node' : item.nid }) }}"
+                                               class="dark-btn">{{ "Lire la suite"|t }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div>
+                    <div class="row item-actu">
+                        <div class="col-lg-6 col-4 p-0">
+                            <figure style="background-image:url({{ actu.0.image }})"></figure>
+                        </div>
+                        <div class="col-lg-6 col-8">
+                            <div class="width-text">
+                                <label>{{ key }}</label>
+                                <h3>{{ actu.0.title }}</h3>
+                                {#<h3>{{ actu.0.title|slice(0,20) }}</h3>#}
+                                <p>{{ actu.0.body|striptags|slice(0,80) }}</p>
+                                <a href="{{ path('entity.node.canonical', { 'node' : actu.0.nid }) }}"
+                                   class="dark-btn">{{ "Lire la suite"|t }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

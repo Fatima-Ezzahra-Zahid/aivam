@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Bartik's theme implementation for a branding block.
+ *
+ * Each branding element variable (logo, name, slogan) is only available if
+ * enabled in the block configuration.
+ *
+ * Available variables:
+ * - site_logo: Logo for site as defined in Appearance or theme settings.
+ * - site_name: Name for site as defined in Site information settings.
+ * - site_slogan: Slogan for site as defined in Site information settings.
+ */
+#}
+{% set attributes = attributes.addClass('site-branding') %}
+{% block content %}
+    <div class="col-md-2 col-12 p-0 d-flex">
+        {% if site_logo %}
+            <a href="{{ path('<front>') }}">
+                <figure class="logo">
+
+                </figure>
+            </a>{#TODO#}
+            {#<figure class="logo" style="background: url({{ base_path ~ site_logo }}) no-repeat;"></figure>#}
+        {% endif %}
+        <button class="btn-serach-mobile d-block d-lg-none"></button>
+    </div>
+{% endblock %}

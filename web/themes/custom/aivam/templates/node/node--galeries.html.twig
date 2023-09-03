@@ -1,0 +1,99 @@
+<div class="banier-top">
+    <div class="content-banier"
+         style="background-position:top 45px center;background-image: url({{ content.field_image_titre_page.0['#markup'] }})">
+        <div class="row m-0">
+            <div class="col-lg-7 p-0">
+                {{ printBlock('aivam_breadcrumbs') }}
+                <a class="back-page"></a>
+                <h1>{{ label }}</h1>
+                {{ content.body }}
+            </div>
+            <div class="col-lg-5 p-0 before-figure">
+                <figure>
+                    {{ content.field_image_banniere_page }}
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blew-block grid"
+     style="background-image: url('/{{ base_path ~ directory }}/assets/images/background-blew-block.png')">
+    <div class="fix-block ">
+        <div class="gallery" id="gallery">
+            <div class="row m-0">
+                {% if node.field_video_id.value is not empty %}
+                    <div class="col-lg-4 p-0">
+                        <a href="{{ 'https://www.youtube.com/watch?v=' ~ node.field_video_id.value }}">
+                            <figure class="big-height">
+                                <img src="{{ 'https://i.ytimg.com/vi/' ~ node.field_video_id.value ~ '/hqdefault.jpg' }}">
+                                <button class="btn-video"></button>
+                            </figure>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if ((node.field_video_id.value is not empty) and node.field_galerie.value|length < 4) or node.field_galerie.value|length < 3 %}
+                    {% for item in node.field_galerie.value %}
+                        {% set paragraph = paragraphLoad(item.target_id) %}
+                        <div class="col-lg-4 p-0">
+                            <a href="{{ file_url(paragraph.field_image_s.entity.fileuri) }}">
+                                <figure class="small-height">
+                                    <img src="{{ (paragraph.field_image_s.entity.fileuri is not empty) ? file_url(paragraph.field_image_s.entity.fileuri) : '' }}"
+                                         alt="{{ paragraph.field_image_s.alt }}"
+                                         title="{{ paragraph.field_image_s.title }}">
+                                    <img class="oreile-hover"
+                                         src="/{{ base_path ~ directory }}/assets/images/oreille.png">
+                                </figure>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% for item in node.field_galerie.value %}
+                                {% set paragraph = paragraphLoad(item.target_id) %}
+                        {% set image= {
+                        '#theme':      'image_style',
+                                         '#style_name': 'galerie_second',
+                        '#uri': paragraph.field_image_s.0.entity.fileuri,
+                        } %}
+                        <div class="col-lg-4 p-0">
+                            <a href="{{ file_url(paragraph.field_image_s.entity.fileuri) }}">
+                                <figure class="{{ ((node.field_video_id.value is empty) and loop.index == 1) ? 'big-height' : 'small-height' }}">
+                                    {% if (loop.index == 1) or (loop.index == 2 and node.field_video_id.value is empty) %}
+                                        {{ image }}
+                                    {% else %}
+                                        <img src="{{ (paragraph.field_image_s.entity.fileuri is not empty) ? file_url(paragraph.field_image_s.entity.fileuri) : '' }}"
+                                             alt="{{ paragraph.field_image_s.alt }}"
+                                             title="{{ paragraph.field_image_s.title }}">
+                                    {% endif %}
+                                    <img class="oreile-hover"
+                                         src="/{{ base_path ~ directory }}/assets/images/oreille.png">
+                                </figure>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="padding-gallery">
+    <div class="edition-block" style="background-image: url('/{{ base_path ~ directory }}/assets/images/back-precedent.png');">
+        <h2 class="title-bold ">{{ "Autres éditions et événements"|t }}</h2>
+        <div class="slider-precedent">
+            <div id="slider-precedent">
+                {% for node in getOthersGaleries(node.nid.value) %}
+                    <div>
+                        <figure class="item-img">
+                            <img src="{{ (node.field_image_banniere_page.entity.fileuri is not empty) ? file_url(node.field_image_banniere_page.entity.fileuri) : '' }}">
+                        </figure>
+                        <h4><a href="{{ path('entity.node.canonical', { 'node' : node.nid.value }) }}"
+                               class="dark-btn">{{ node.title.value }}</a></h4>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ attach_library('aivam/galerie_librarie') }}

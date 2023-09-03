@@ -1,0 +1,58 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% for row in rows %}
+    <div class="item-list  {{ (loop.index is divisible by(2)) ? 'green-block' : 'blew-block' }}"
+         style="background-image: url('/{{ base_path ~ directory }}/assets/images/background-blew-block.png')">
+        <div class="row">
+            {% if loop.index is divisible by(2) %}{#TODO : odd event#}
+                <div class="col-lg-5">
+                    <label class="absolute-date">{{ row.content['#node'].get('field_date_actus').value|date('d') }}</label>
+                    <div class="parag-item">
+                        <span class="date-detail">{{ row.content['#node'].get('field_date_actus').value|date("d M. Y") }}</span>
+                        <h3>{{ row.content['#node'].get('title').value }}</h3>
+                        <p>{{ row.content['#node'].get('body').summary|raw }}</p>
+                        <a href="{{ path('entity.node.canonical', { 'node' : row.content['#node'].get('nid').value }) }}" class="dark-btn">Lire la suite</a>
+                    </div>
+                </div>
+                <div class="col-lg-7 p-0">
+                    <figure>
+                        <img src="{{ file_url(row.content['#node'].get('field_image_actu').0.entity.uri.value) }}">
+                    </figure>
+                </div>
+            {% else %}
+                <div class="col-lg-7 p-0">
+                    <figure>
+                        <img src="{{ file_url(row.content['#node'].get('field_image_actu').0.entity.uri.value) }}">
+                    </figure>
+                </div>
+                <div class="col-lg-5">
+                    <label class="absolute-date">{{ row.content['#node'].get('field_date_actus').value|date('d') }}</label>
+                    <div class="parag-item">
+                        <span class="date-detail">{{ row.content['#node'].get('field_date_actus').value|date("d M. Y") }}</span>
+                        <h3>{{ row.content['#node'].get('title').value }}</h3>
+                        <p>{{ row.content['#node'].get('body').summary|raw }}</p>
+                        <a href="{{ path('entity.node.canonical', { 'node' : row.content['#node'].get('nid').value }) }}" class="dark-btn">Lire la suite</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

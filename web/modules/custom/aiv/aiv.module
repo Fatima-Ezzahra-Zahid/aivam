@@ -1,0 +1,126 @@
+<?php
+
+/**
+ * @file
+ * Contains aiv.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_help().
+ */
+function aiv_help($route_name, RouteMatchInterface $route_match)
+{
+    switch ($route_name) {
+        // Main module help for the aiv module.
+        case 'help.page.aiv':
+            $output = '';
+            $output .= '<h3>' . t('About') . '</h3>';
+            $output .= '<p>' . t('My Awesome Module') . '</p>';
+            return $output;
+
+        default:
+    }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function aiv_theme()
+{
+    return [
+        'aiv' => [
+            'render element' => 'children',
+        ],
+        'theme_actus_home' => [
+            'variables' => ['data' => []]
+        ],
+        'theme_action_association' => [
+            'variables' => ['data' => []]
+        ],
+        'theme_galeries_home' => [
+            'variables' => ['data' => []]
+        ],
+        'theme_galeries_home_ajax' => [
+            'variables' => ['data' => []]
+        ],
+        'theme_first_block_association' => [
+            'variables' => []
+        ]
+    ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ */
+function aiv_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
+{
+    $view_ids = ['galerie_hp'];
+    $view = $form_state->getStorage('view');
+    if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
+
+        $query = \Drupal::entityQuery('node')
+            ->condition('status', 1)
+            ->condition('type', 'galeries')
+//            ->condition('field_galerie.entity.field_booleen', 'on')
+            ->sort('title');
+        $nids = $query->execute();
+
+        // If there are no nodes, move on
+        if (!$nids) {
+            return FALSE;
+        }
+
+        // Start building out the options for our select list
+        $options = [];
+        $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
+
+        // Push titles into select list
+        foreach ($nodes as $node) {
+            $options[$node->nid->value] = $node->title->value;
+        }
+
+        // Start building out our new form element
+        $artist_field = 'title';
+        $form[$artist_field]['#type'] = 'select';
+        $form[$artist_field]['#multiple'] = FALSE;
+
+        // Specify the empty option for our select list
+        $form[$artist_field]['#empty_option'] = t('Title');
+
+        // Add the $options from above to our select list
+        $form[$artist_field]['#options'] = $options;
+        unset($form[$artist_field]['#size']);
+    }
+}
+
+/**
+ * Implementation of hook_views_pre_build().
+ */
+function aiv_views_pre_build(ViewExecutable $view) {
+    // Offset: starting point (position) of the subset of nodes
+    /*if (!empty($_REQUEST['offset'])) {
+        $offset = (int) $_REQUEST['offset'];
+        if ($offset >= 0) {
+            $view->set_offset($offset);
+        }
+    }*/
+    // Limit: is the number of nodes to return
+    if (!empty($_REQUEST['limit'])) {
+        $limit = (int) $_REQUEST['limit'];
+        if ($limit >= 0) {
+            $view->setItemsPerPage($limit);
+        }
+    }
+}
+
+/**
+ * Implements hook_query_TAG_alter(): tag search_$type with $type node_search.
+ */
+function aiv_query_search_node_search_alter(\Drupal\Core\Database\Query\AlterableInterface $query)
+{
+    $query->condition('n.type', array('galeries', 'page', 'actualite', 'actions_et_feuille_de_route'), 'IN');
+}

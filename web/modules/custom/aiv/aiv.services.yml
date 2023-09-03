@@ -1,0 +1,5 @@
+services:
+  aiv.twig.FunctionsTwig:
+    class: Drupal\aiv\Twig\FunctionsTwig
+    tags:
+    - { name: twig.extension }

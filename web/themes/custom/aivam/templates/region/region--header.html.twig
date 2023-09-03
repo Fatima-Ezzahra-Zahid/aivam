@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region <div>.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @see template_preprocess_region()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if content %}
+    <div {{ attributes }} class="row m-0">
+       {# <div class="col-lg-1 text-center pt-4 beig-back d-none d-lg-block">
+            {{ printBlock('selecteurdelangue') }}
+        </div>#}
+        <div class="col-lg-12 p-0 px-4 change-color">
+            <div class="row py-4 m-0 align-items-center">
+                {{ content }}
+                <div class="col-md-1 col-12 p-0">
+                    {#<a href="/user/login" class="dark-btn">{{ "éspace adhérents"|t }}</a>#}{#TODO#}
+                    <button class="btn-serach"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ printBlock('aivam_search') }}
+{% endif %}

@@ -1,0 +1,71 @@
+<div class="vertical-slide back-green">
+    <div class="fix-block">
+        <h2 class="title-bold">{{ data.settings.label }}</h2>
+        <p>{{ data.settings.text_descriptive.value|raw }}</p>{#TODO#}
+    </div>
+    <div class="row slider-block">
+        <div class="col-lg-11">
+            <div id="slider-vertical">
+
+                {% for key, act in data.items %}
+                    {% if act|length > 1 %}
+                        <div>
+                            <div class="sous-date">
+                                {% for item in act %}
+                                    <div>
+                                        <div class="row item-text-vertical">
+                                            <div class="col-lg-7 col-12">
+                                                <figure>
+                                                    <img src="{{ item.image }}">
+                                                </figure>
+                                            </div>
+                                            <div class="col-lg-5 col-12">
+                                                <div class="desc-vertical">
+                                                    <h5>{{ item.date }}</h5>
+                                                    <h3>{{ item.title|slice(0,20) }}</h3>
+                                                    <p>{{ item.body|striptags|slice(0,80) }}</p>
+                                                    <a href="{{ path('entity.node.canonical', { 'node' : item.nid }) }}"
+                                                       class="dark-btn">{{ "Savoir plus"|t }}</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div>
+                            <div class="row item-text-vertical">
+                                <div class="col-lg-7 col-12">
+                                    <figure>
+                                        <img src="{{ act.0.image }}">
+                                    </figure>
+                                </div>
+                                <div class="col-lg-5 col-12">
+                                    <div class="desc-vertical">
+                                        <h5>{{ act.0.date }}</h5>
+                                        <h3>{{ act.0.title|slice(0,20) }}</h3>
+                                        <p>{{ act.0.body|striptags|slice(0,80) }}</p>
+                                        <a href="{{ path('entity.node.canonical', { 'node' : act.0.nid }) }}"
+                                           class="dark-btn">{{ "Savoir plus"|t }}</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-1 text-center">
+            <div id="slider-date">
+                {% for key, act in data.items %}
+                    <div>
+                        <span class="item-date">{{ key }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

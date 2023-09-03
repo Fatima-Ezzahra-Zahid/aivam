@@ -1,0 +1,23 @@
+<div class="blew-block blew-block-chiffre" style="background-image: url('/{{ base_path ~ directory }}/assets/images/background-blew-block.png')">
+    <!--<div class="fix-blew-block">-->
+    <ul class="nav nav-pills chiffre-tab fix-block mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="active" id="pills-missions-tab" data-toggle="pill" href="#pills-missions" role="tab"
+               aria-controls="pills-missions" aria-selected="true">{{ 'Présentation'|t }}</a>
+        </li>
+        <li class="nav-item">
+            <a id="pills-organigramme-tab" data-toggle="pill" href="#pills-organigramme" role="tab"
+               aria-controls="pills-organigramme" aria-selected="false">{{ 'Organigramme'|t }}</a>
+        </li>
+        <li class="nav-item">
+            <a id="pills-chiffres-tab" data-toggle="pill" href="#pills-chiffres" role="tab"
+               aria-controls="pills-chiffres" aria-selected="false">{{ 'Chiffres clés'|t }}</a>
+        </li>
+    </ul>
+    <div class="tab-content tab-chiffre" id="pills-tabContent">
+        {{ printBlock('notremission') }}
+        {{ printBlock('organigramme') }}
+        {{ printBlock('chiffrescles') }}
+    </div>
+    <!--</div>-->
+</div>

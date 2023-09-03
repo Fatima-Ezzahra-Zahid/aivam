@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Default theme implementation for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ *
+ * @ingroup themeable
+ */
+#}
+<label class="container">
+    {{ 'J\'ai lu et j\'accepte les  <a href=":url">conditions générales</a> d\'utilisation ainsi que la decharge de reponsabilité.'|t({ ':url': url }) }}
+    <input{{ attributes }} />{{ children }}
+    <span class="checkmark"></span>
+</label>

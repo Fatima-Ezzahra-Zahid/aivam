@@ -1,0 +1,155 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: Themed creation date field.
+ * - author_name: Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ */
+#}
+<div class="modal fade galerie" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body video">
+                <iframe width="700" height="460" src="" allowfullscreen=""></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="banier-top">
+    <div class="content-banier"
+         style="background-position:top 45px center;background-image: url('/{{ base_path ~ directory }}/assets/images/back-actualite.png')">
+        <div class="row m-0">
+            <div class="col-lg-5 p-0">
+                {{ printBlock('aivam_breadcrumbs') }}
+                <h2>{{ "Actualités"|t }}</h2>
+                <h1 class="mw-100">{{ label }}</h1>
+            </div>
+            <div class="col-lg-7 p-0 {{ (is_404) ? 'text-center' : ' before-figure' }}">
+                <figure>
+                    {{ content.field_image_detail_hp }}
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block-detail">
+    <span class="absolute-date">{{ node.field_date_actus.value|date("d M.") }}</span>
+    <div class="bef-title">
+        <label class="fix-block date-detail">
+            {{ node.field_date_actus.value|date("d M. Y") }}
+        </label>
+    </div>
+    <div class="fix-block parag-detail">
+        {{ content.body }}
+    </div>
+</div>
+<div class="fix-block">
+    {% if node.field_image_or_video.value %}
+        <div class="slider-detail">
+            {% set break = 0 %}
+            {% set paragraph = '' %}
+            {% for media in node.field_image_or_video.value if break == 0 %}
+                {% set paragraph = paragraphLoad(media.target_id) %}
+                {% if not paragraph.field_texte.0.value %}
+                    {% set break = 1 %}
+                {% endif %}
+            {% endfor %}
+            <div id="one-slider">
+                <figure class="item-one"
+                        style="background-image: url('{{ (paragraph.field_image.entity.fileuri is not empty) ? file_url(paragraph.field_image.entity.fileuri) : '' }}')">
+                </figure>
+            </div>
+            <div id="lot-slider">
+                {% for media in node.field_image_or_video.value %}
+                    {% set paragraph = paragraphLoad(media.target_id) %}
+                    <div>
+                        {% if paragraph.field_texte.0.value %}
+                            <figure class="item-lot video"
+                                    style="background-image: url('https://i.ytimg.com/vi/{{ paragraph.field_texte.0.value }}/hqdefault.jpg')">
+                                <button type="button" class="play-video" data-toggle="modal" data-target="#exampleModal"
+                                        data-id="{{ paragraph.field_texte.0.value }}">
+                                </button>
+                            </figure>
+                        {% else %}
+                            <figure class="item-lot"
+                                    style="background-image: url('{{ (paragraph.field_image.entity.fileuri is not empty) ? file_url(paragraph.field_image.entity.fileuri) : '' }}')">
+                            </figure>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {{ node.field_second_body_actu.0.value|raw }}
+</div>

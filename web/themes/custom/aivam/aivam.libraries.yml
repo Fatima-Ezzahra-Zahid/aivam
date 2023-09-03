@@ -1,0 +1,36 @@
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      assets/plugins/bootstrap/bootstrap.min.css : {}
+      assets/plugins/slick/slick.css : {}
+      assets/css/style.css: {}
+      assets/css/custom.css: {}
+      assets/css/fix.css: {}
+  js:
+    assets/plugins/bootstrap/bootstrap.min.js: {}
+    assets/plugins/slick/slick.min.js: {}
+    assets/js/script.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal.ajax
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.once
+
+galerie_librarie:
+  version: 1.x
+  css:
+    theme:
+      assets/plugins/fancybox/jquery.fancybox.min.css: {}
+  js:
+    assets/plugins/fancybox/jquery.fancybox.min.js: {}
+  dependencies:
+    - core/jquery
+
+progress_librarie:
+  version: 1.x
+  js:
+    assets/plugins/progressbar/jQuery-plugin-progressbar.js: {}
+  dependencies:
+    - core/jquery

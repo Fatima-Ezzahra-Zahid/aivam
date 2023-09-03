@@ -1,0 +1,400 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the aivam theme.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function aivam_preprocess_html(array &$variables)
+{
+    /* Add class to html tag */
+    //$variables['html_attributes']->addClass('no-js');
+
+    // Don't display the site name twice on the front page (and potentially others)
+    /*if (isset($variables['head_title_array']['title']) && isset($variables['head_title_array']['name']) && ($variables['head_title_array']['title'] == $variables['head_title_array']['name'])) {
+      $variables['head_title'] = $variables['head_title_array']['name'];
+    }*/
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function aivam_page_attachments_alter(array &$page)
+{
+    // Tell IE to use latest rendering engine (not to use compatibility mode).
+    /*$ie_edge = [
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => [views
+      'http-equiv' => 'X-UA-Compatible',
+      'content' => 'IE=edge',
+      ],
+    ];
+    $page['#attached']['html_head'][] = [$ie_edge, 'ie_edge'];*/
+
+    $backgroundImageColored = theme_get_setting('logo_colored_path', 'aivam');
+    $backgroundImage = theme_get_setting('logo.url', 'aivam');
+    $page['#attached']['html_head'][] = [
+        [
+            '#tag' => 'style',
+            '#value' => 'header.active .logo,header.header-white .change-color .logo { background: url(/' . $backgroundImageColored . ') no-repeat; }
+header .logo{background: url(' . $backgroundImage . ') no-repeat;}',
+        ],
+        'global-styling'
+    ];
+
+}
+
+/**
+ * Implements hook_preprocess_page() for page.html.twig.
+ */
+function aivam_preprocess_page(array &$variables)
+{
+
+}
+
+/**
+ * Use language code for the language switcher
+ *
+ * @param $variables
+ */
+function aivam_preprocess_links__language_block(&$variables)
+{
+
+    foreach ($variables['links'] as $i => $link) {
+        // @var \Drupal\language\Entity\ConfigurableLanguage $linkLanguage
+        $linkLanguage = $link['link']['#options']['language'];
+        $variables['links'][$i]['link']['#title'] = $linkLanguage->get('id');
+        if (\Drupal::languageManager()->getCurrentLanguage()->getId() == $linkLanguage->get('id')) {
+            array_unshift($variables['links'], $variables['links'][$i]);
+            unset($variables['links'][$i]);
+        }
+    }
+}
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function aivam_theme_suggestions_page_alter(array &$suggestions, array $variables)
+{
+
+}
+
+/**
+ * Implements hook_theme_suggestions_node_alter().
+ */
+function aivam_theme_suggestions_node_alter(array &$suggestions, array $variables)
+{
+    /*$node = $variables['elements']['#node'];
+
+    if ($variables['elements']['#view_mode'] == "full") {
+
+    }*/
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for Block document templates.
+ */
+function aivam_preprocess_block(array &$variables)
+{
+    $content = $variables['elements']['content'];
+    if (isset($content['#block_content']) && $content['#block_content'] instanceof \Drupal\block_content\BlockContentInterface) {
+        if ($content['#block_content']->bundle() == 'dates_cles') {
+            foreach ($content['#block_content']->field_dates_cles->getValue() as $key => $items) {
+                $paragraph = \Drupal\paragraphs\Entity\Paragraph::load($items['target_id']);
+                $paragraphDate[$key] = ['target_id' => $items['target_id'], 'date' => $paragraph->field_date->getValue()[0]['value']];
+            }
+            usort($paragraphDate, function ($a, $b) {
+                return strtotime($a['date']) - strtotime($b['date']);
+            });
+            $variables['field_dates_cles'] = $paragraphDate;
+        }
+
+    }
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ */
+function aivam_theme_suggestions_field_alter(array &$suggestions, array $variables)
+{
+    /*$element = $variables['element'];
+    $suggestions[] = 'field__' . $element['#view_mode'];
+    $suggestions[] = 'field__' . $element['#view_mode'] . '__' . $element['#field_name'];*/
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ */
+function aivam_theme_suggestions_fieldset_alter(array &$suggestions, array $variables)
+{
+    /*$element = $variables['element'];
+    if (isset($element['#attributes']['class']) && in_array('form-composite', $element['#attributes']['class'])) {
+      $suggestions[] = 'fieldset__form_composite';
+    }*/
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function aivam_preprocess_node(array &$variables)
+{
+    // Default to turning off byline/submitted.
+    //$variables['display_submitted'] = FALSE;
+
+    if ($variables['node']->bundle() == 'page') {
+        $status = \Drupal::requestStack()->getCurrentRequest()->attributes->get('exception');
+        if ($status && $status->getStatusCode() == 404) {
+            $variables['is_404'] = true;
+        }
+        try {
+            $variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
+        } catch (Exception $e) {
+            $variables['is_front'] = FALSE;
+        }
+    } elseif ($variables['node']->bundle() == 'slider_hp') {
+        if ($variables["elements"]["#view_mode"] == "teaser") {
+            if (!empty($variables['view']) && $variables['view'] instanceof \Drupal\views\ViewExecutable) {
+                $node = $variables['node'];
+                foreach ($variables['view']->result as $row) {
+                    if ($row->nid == $node->id()) {
+                        $variables['loop_index'] = sprintf('%02d', $row->index + 1);
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Implements hooktheme_suggestions_block_alter().
+ */
+function aivam_theme_suggestions_block_alter(array &$suggestions, array $variables)
+{
+    // Block suggestions for custom block bundles.
+    if (isset($variables['elements']['content']['#block_content']) && $variables['elements']['content']['#block_content'] instanceof \Drupal\block_content\BlockContentInterface) {
+        array_splice($suggestions, 1, 0, 'block__bundle__' . $variables['elements']['content']['#block_content']->bundle());
+    }
+}
+
+/**
+ * Implements hook_theme_suggestions_views_view_alter().
+ */
+function aivam_theme_suggestions_views_view_alter(array &$suggestions, array $variables)
+{
+    if (isset($variables['view']->element['#view_id'])) {
+        $suggestions[] = 'views_view__' . $variables['view']->element['#view_id'];
+        if (isset($variables['view']->current_display)) {
+            $suggestions[] = 'views_view__' . $variables['view']->element['#view_id'] . '__' . $variables['view']->current_display;
+        }
+    }
+}
+
+/**
+ * Implements hook_theme_suggestions_views_view_alter().
+ */
+function aivam_theme_suggestions_views_view_list_alter(array &$suggestions, array $variables)
+{
+    if (isset($variables['view']->element['#view_id'])) {
+        $suggestions[] = 'views_view_list__' . $variables['view']->element['#view_id'];
+        if (isset($variables['view']->current_display)) {
+            $suggestions[] = 'views_view_list__' . $variables['view']->element['#view_id'] . '__' . $variables['view']->current_display;
+        }
+    }
+}
+
+/**
+ * Implements hook_theme_suggestions_container_alter().
+ */
+function aivam_theme_suggestions_container_alter(array &$suggestions, array $variables)
+{
+    if (isset($variables['element']['#name']) /*&& $variables['element']['#name'] == 'slider_hp'*/) {
+        $suggestions[] = 'container__' . $variables['element']['#name'];
+    }
+}
+
+/**
+ * Implements hook_theme_suggestions_container_alter().
+ */
+function aivam_theme_suggestions_input_alter(array &$suggestions, array $variables)
+{
+    $element = $variables['element'];
+    if (isset($element['#name'])) {
+        $suggestions[] = 'input__' . $element['#type'] . '__' . $element['#id'];
+    }
+}
+
+/**
+ * Implements template_theme_suggestions_node_HOOK_alter().
+ * Add theme suggestions to the view exposed forms.
+ */
+function aivam_theme_suggestions_views_exposed_form_alter(&$suggestions, $vars, $hook)
+{
+//    $suggestions = $vars['form']['#theme'];
+}
+
+/**
+ * Implements hook_preprocess_form().
+ */
+function aivam_preprocess_form(array &$variables)
+{
+    //$variables['attributes']['novalidate'] = 'novalidate';
+}
+
+/**
+ * Implements hook_preprocess_select().
+ */
+function aivam_preprocess_select(array &$variables)
+{
+    //$variables['attributes']['class'][] = 'select-chosen';
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function aivam_preprocess_field(array &$variables, $hook)
+{
+    /*switch ($variables['element']['#field_name']) {
+    }*/
+}
+
+/**
+ * Implements hook_preprocess_details().
+ */
+function aivam_preprocess_details(array &$variables)
+{
+    /*$variables['attributes']['class'][] = 'details';
+    $variables['summary_attributes']['class'] = 'summary';*/
+}
+
+/**
+ * Implements hook_theme_suggestions_details_alter().
+ */
+function aivam_theme_suggestions_details_alter(array &$suggestions, array $variables)
+{
+
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function aivam_preprocess_menu_local_task(array &$variables)
+{
+    //$variables['element']['#link']['url']->setOption('attributes', ['class'=>'rounded']);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for item_list__search_results.
+ */
+function aivam_preprocess_item_list__search_results(array &$variables)
+{
+    // The $pager_total_items variable is a global
+    // array keyed by the pager element increments.
+    global $pager_total_items;
+
+    // Assuming you have one paged list on your page only,
+    // the element's key should be 0.
+    $variables['pager_total_items'] = isset($pager_total_items[0]) ? $pager_total_items[0] : 0;
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function aivam_preprocess_breadcrumb(&$variables)
+{
+    $request = \Drupal::request();
+    $route_match = \Drupal::routeMatch();
+    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+
+    //this variable will avaliable in twig file.
+    $variables['breadcrumb'][] = array(
+        'text' => $page_title
+    );
+    $variables['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function aivam_form_alter(&$form, &$form_state, $form_id)
+{
+    if ($form_id == 'search_form') {
+        $form['#access'] = FALSE;
+    } elseif ($form_id == 'webform_submission_contact_node_13_add_form') {
+        foreach ($form['elements'] as &$field) {
+            if (isset($field['#type'])) {
+                if ($field['#type'] == 'textfield' || $field['#type'] == 'email') {
+                    $field['#prefix'] = '<div class="col-lg-6 input-control">';
+                    $field['#suffix'] = '</div>';
+                } elseif ($field['#type'] == 'textarea') {
+                    $field['#prefix'] = '<div class="col-lg-12 input-control">';
+                    $field['#suffix'] = '</div>';
+                }
+            }
+        }
+    }
+}
+
+function aivam_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface &$form_state)
+{
+    // Work-around for a core bug affecting admin themes. See issue #943212.
+
+    $form['social_media'] = [
+        '#type' => 'details',
+        '#title' => t('Social Media'),
+        '#open' => TRUE
+    ];
+    $form['social_media']['url_facebook'] = [
+        '#type' => 'textfield',
+        '#title' => t('External Facebook URL'),
+        '#description' => t("Link external of Facebook"),
+        '#default_value' => theme_get_setting('url_facebook', 'aivam')
+    ];
+    $form['social_media']['url_twitter'] = [
+        '#type' => 'textfield',
+        '#title' => t('External Twitter URL'),
+        '#description' => t("Link external of Twitter"),
+        '#default_value' => theme_get_setting('url_twitter', 'aivam')
+    ];
+    $form['social_media']['url_linkedin'] = [
+        '#type' => 'textfield',
+        '#title' => t('External Linkedin URL'),
+        '#description' => t("Link external of Linkedin"),
+        '#default_value' => theme_get_setting('url_linkedin', 'aivam')
+    ];
+
+    $form['logo']['logo_colored_path'] = [
+        '#type' => 'textfield',
+        '#title' => t('Path logo colored'),
+        '#description' => t('Exemples : logo.svg (pour un fichier dans le système de fichiers public), public://logo.svg ou themes/custom/aivam/logo.svg.'),
+        '#default_value' => theme_get_setting('logo_colored_path', 'aivam')
+    ];
+
+    $form['global_config'] = [
+        '#type' => 'details',
+        '#title' => t('Global config'),
+        '#open' => TRUE
+    ];
+    $form['global_config']['adresse'] = [
+        '#type' => 'textfield',
+        '#title' => t('Adress'),
+        '#description' => 'Adresse Aivam',
+        '#default_value' => theme_get_setting('adresse', 'aivam')
+    ];
+    $form['global_config']['tel'] = [
+        '#type' => 'textfield',
+        '#title' => t('Phone'),
+        '#description' => 'Adresse Aivam',
+        '#default_value' => theme_get_setting('tel', 'aivam')
+    ];
+    $form['global_config']['email'] = [
+        '#type' => 'textfield',
+        '#title' => t('Email'),
+        '#description' => 'Adresse Aivam',
+        '#default_value' => theme_get_setting('email', 'aivam')
+    ];
+
+}

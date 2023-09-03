@@ -1,0 +1,7 @@
+aiv.galerie.change-item:
+  path: '/change-galerie'
+  defaults:
+    _controller: '\Drupal\aiv\Controller\MainController::changeGalerie'
+    _title: 'Change galerie'
+  requirements:
+    _access: 'TRUE'

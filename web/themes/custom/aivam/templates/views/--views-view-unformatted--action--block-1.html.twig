@@ -1,0 +1,389 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ *
+ * @ingroup themeable
+ */
+#}
+    {{ dump(rows) }}
+{#{% for row in rows %}
+    {{ dump(row.content['#view']) }}
+{% endfor %}#}
+
+{#<div class="col-lg-11">
+    <div id="slider-vertical">
+        <div>
+            <div class="sous-date">
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="row item-text-vertical">
+                <div class="col-lg-7 col-12">
+                    <figure>
+                        <img src="assets/images/img-slidervertical1.png">
+                    </figure>
+                </div>
+                <div class="col-lg-5 col-12">
+                    <div class="desc-vertical">
+                        <h5>30 Septembre 2018</h5>
+                        <h3>LE MAROC PREND PART AU SALON
+                            AUTOMECHANIKA ISTANBUL</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut </p>
+                        <a href="#" class="dark-btn">Savoir plus</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="row item-text-vertical">
+                <div class="col-lg-7 col-12">
+                    <figure>
+                        <img src="assets/images/img-slidervertical1.png">
+                    </figure>
+                </div>
+                <div class="col-lg-5 col-12">
+                    <div class="desc-vertical">
+                        <h5>30 Septembre 2018</h5>
+                        <h3>LE MAROC PREND PART AU SALON
+                            AUTOMECHANIKA ISTANBUL</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut </p>
+                        <a href="#" class="dark-btn">Savoir plus</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="sous-date">
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="row item-text-vertical">
+                <div class="col-lg-7 col-12">
+                    <figure>
+                        <img src="assets/images/img-slidervertical1.png">
+                    </figure>
+                </div>
+                <div class="col-lg-5 col-12">
+                    <div class="desc-vertical">
+                        <h5>30 Septembre 2018</h5>
+                        <h3>LE MAROC PREND PART AU SALON
+                            AUTOMECHANIKA ISTANBUL</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut </p>
+                        <a href="#" class="dark-btn">Savoir plus</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="row item-text-vertical">
+                <div class="col-lg-7 col-12">
+                    <figure>
+                        <img src="assets/images/img-slidervertical1.png">
+                    </figure>
+                </div>
+                <div class="col-lg-5 col-12">
+                    <div class="desc-vertical">
+                        <h5>30 Septembre 2018</h5>
+                        <h3>LE MAROC PREND PART AU SALON
+                            AUTOMECHANIKA ISTANBUL</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut </p>
+                        <a href="#" class="dark-btn">Savoir plus</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="sous-date">
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                    <div class="row item-text-vertical">
+                        <div class="col-lg-7 col-12">
+                            <figure>
+                                <img src="assets/images/img-slidervertical1.png">
+                            </figure>
+                        </div>
+                        <div class="col-lg-5 col-12">
+                            <div class="desc-vertical">
+                                <h5>15 Septembre 2018</h5>
+                                <h3>LE MAROC PREND PART AU SALON
+                                    AUTOMECHANIKA ISTANBUL</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua. Ut </p>
+                                <a href="#" class="dark-btn">Savoir plus</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-lg-1 text-center">
+    <div id="slider-date">
+        <div>
+            <span class="item-date">20 Août</span>
+        </div>
+        <div>
+            <span  class="item-date">05 Sept</span>
+        </div>
+        <div>
+            <span  class="item-date">30 Sept</span>
+        </div>
+        <div>
+            <span  class="item-date">15 Oct</span>
+        </div>
+        <div>
+            <span  class="item-date">22 Déc</span>
+        </div>
+        <div>
+            <span  class="item-date">22 Déc</span>
+        </div>
+        <div>
+            <span  class="item-date">22 Déc</span>
+        </div>
+    </div>
+</div>#}

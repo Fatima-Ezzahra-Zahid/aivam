@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+<div class="row m-0">
+    <div class="col-lg-1 beig-back p-0">
+        <div class="social-reseau">
+            <label>{{ "Suivez-nous"|t }}</label>
+            <ul>
+                <li><a href="{{ theme_get_setting('url_facebook') }}" target="_blank"><img src="/{{ base_path ~ active_theme_path()  }}/assets/images/face-icon.png"></a></li>
+                <li><a href="{{ theme_get_setting('url_twitter') }}" target="_blank"><img src="/{{ base_path ~ active_theme_path()  }}/assets/images/twitter-icon.png"></a></li>
+                <li><a href="{{ theme_get_setting('url_linkedin') }}" target="_blank"><img src="/{{ base_path ~ active_theme_path()  }}/assets/images/linkden.png"></a></li>{#TODO#}
+            </ul>
+        </div>
+    </div>
+    {% block content %}
+        {{ content }}
+    {% endblock %}
+</div>

@@ -1,0 +1,11 @@
+{% for galerie in data.field_galerie.value %}
+    {% set paragraph = paragraphLoad(galerie.target_id) %}
+    {% if paragraph.field_booleen.value %}
+        <div>
+            <figure class="item-salon"><img
+                        src="{{ (paragraph.field_image_s.entity.fileuri is not empty) ? file_url(paragraph.field_image_s.entity.fileuri) : '' }}"
+                        alt="{{ paragraph.field_image_s.alt }}"
+                        title="{{ paragraph.field_image_s.title }}"></figure>
+        </div>
+    {% endif %}
+{% endfor %}
